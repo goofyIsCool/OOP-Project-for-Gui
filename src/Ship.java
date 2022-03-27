@@ -1,11 +1,17 @@
+import java.util.LinkedList;
+
 public class Ship {
-    public static int n = 0;
+    public static int n;
     private int id;
+
     private String name;
     private String homePort;
     private String origin;
     private String destination;
-    protected int capacity;
+//    protected int maxNumContainers;
+    protected int maxNumContainers;
+    protected double maxWeight;
+    private LinkedList<Container> containers; // All containers that were loaded on the ship.
 
     public Ship(String name, String homePort, String origin, String destination){
         this.id = n++;
@@ -13,6 +19,11 @@ public class Ship {
         this.homePort = homePort;
         this.origin = origin;
         this.destination = destination;
+        this.containers = new LinkedList<Container>();
+    }
+
+    public void defineCapacityDeadweight(){
+
     }
 
     public int getId() {
@@ -31,9 +42,7 @@ public class Ship {
         this.name = name;
     }
 
-    public String getHomePort() {
-        return homePort;
-    }
+    public String getHomePort() {return homePort;}
 
     public void setHomePort(String homePort) {
         this.homePort = homePort;
@@ -55,13 +64,43 @@ public class Ship {
         this.destination = destination;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public int getMaxNumContainers() {
+        return maxNumContainers;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setMaxNumContainers(int maxNumContainers) {
+        this.maxNumContainers = maxNumContainers;
     }
+
+    public double getMaxWeight() {
+        return maxWeight;
+    }
+
+    public void setMaxWeight(double maxWeight) {
+        this.maxWeight = maxWeight;
+    }
+
+    public double getTotalWeightContainers(){
+        double weight = 0;
+        for (Container c: containers) {
+            weight += c.getGrossWeight();
+        }
+
+        return weight;
+    }
+
+    public void loadContainer(Container c) throws ShipOverloaded {
+        if (!containers.contains(c) && containers.size() < maxNumContainers && getTotalWeightContainers() + c.getGrossWeight() <= maxWeight){
+            containers.add(c);
+            System.out.println("Container:" + c + " has been successfully loaded on the " + name + ".");
+        }
+        else{
+            System.out.println(" Loading the container will exceed the permissible safe load capacity of the ship.");
+            throw new ShipOverloaded("Ship is already fully loaded.");
+        }
+    }
+
+    public void unloadContainer(Container c){}
 
     @Override
     public String toString(){

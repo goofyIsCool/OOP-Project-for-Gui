@@ -1,5 +1,3 @@
-import java.nio.charset.StandardCharsets;
-
 public class Sender {
     private String name;
     private String surname;
@@ -45,5 +43,5 @@ public class Sender {
         this.address = address;
     }
 
-    // LocalDate getDateOfBirth(String PESEL);
+    // public LocalDate getDateOfBirth(String PESEL);
 }
