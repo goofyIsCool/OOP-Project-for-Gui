@@ -1,10 +1,16 @@
+import java.nio.charset.StandardCharsets;
+
 public class Sender {
+    protected static int n;
+
+    private int id;
     private String name;
     private String surname;
     private String PESEL;
     private String address;
 
     public Sender(String name, String surname, String PESEL, String address) {
+        this.id = n++;
         this.name = name;
         this.surname = surname;
         this.PESEL = PESEL;
@@ -43,5 +49,10 @@ public class Sender {
         this.address = address;
     }
 
-    // public LocalDate getDateOfBirth(String PESEL);
+    // LocalDate getDateOfBirth(String PESEL);
+
+    @Override
+    public String toString(){
+        return "(id="+id+")"+name+" "+surname+", PESEL:" + getPESEL() + ", Address:" + address;
+    }
 }

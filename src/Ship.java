@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Ship {
@@ -8,7 +9,7 @@ public class Ship {
     private String homePort;
     private String origin;
     private String destination;
-//    protected int maxNumContainers;
+
     protected int maxNumContainers;
     protected double maxWeight;
     private LinkedList<Container> containers; // All containers that were loaded on the ship.
@@ -22,8 +23,9 @@ public class Ship {
         this.containers = new LinkedList<Container>();
     }
 
-    public void defineCapacityDeadweight(){
-
+    public void defineCapacityDeadweight(int maxNumContainers, double maxWeight){
+        this.maxNumContainers = maxNumContainers;
+        this.maxWeight = maxWeight;
     }
 
     public int getId() {
@@ -64,22 +66,6 @@ public class Ship {
         this.destination = destination;
     }
 
-    public int getMaxNumContainers() {
-        return maxNumContainers;
-    }
-
-    public void setMaxNumContainers(int maxNumContainers) {
-        this.maxNumContainers = maxNumContainers;
-    }
-
-    public double getMaxWeight() {
-        return maxWeight;
-    }
-
-    public void setMaxWeight(double maxWeight) {
-        this.maxWeight = maxWeight;
-    }
-
     public double getTotalWeightContainers(){
         double weight = 0;
         for (Container c: containers) {
@@ -104,6 +90,6 @@ public class Ship {
 
     @Override
     public String toString(){
-        return "(id=" + id + ") Ship: " + name + ",Destination: " + destination + ".";
+        return "(id=" + id + ") Ship: " + name + ", Home Port: " + homePort + ", Origin: " + origin + ", Destination" + destination + ".";
     }
 }

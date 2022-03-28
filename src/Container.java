@@ -1,60 +1,27 @@
 import java.util.LinkedList;
 
-public abstract class Container {
-    public static int n;
-    protected int id;
+public interface Container {
 
-    private Sender sender;
-    private String security;
-    private double tare;
-    private double netWeight;
-    private double grossWeight;
-    public LinkedList<String> certificates;
+    public Sender getSender();
 
-    public Container (Sender sender, String security, double tare, double netWeight, double grossWeight, LinkedList<String> certificates){
-        this.id = n++;
-        this.sender = sender;
-        this.security = security;
-        this.tare = tare; // The weight of the container
-        this.netWeight = netWeight;
-        this.grossWeight = grossWeight;
-        this.certificates = certificates;
-    }
+    public void setSender(Sender sender);
 
-    public String getSecurity() {
-        return security;
-    }
+    public String getSecurity();
 
-    public void setSecurity(String security) {
-        this.security = security;
-    }
+    public void setSecurity(String security);
 
-    public double getTare() {
-        return tare;
-    }
+    public double getTare();
 
-    public void setTare(double tare) {
-        this.tare = tare;
-    }
+    public void setTare(double tare);
 
-    public double getNetWeight() {
-        return netWeight;
-    }
+    public double getNetWeight();
 
-    public void setNetWeight(double netWeight) {
-        this.netWeight = netWeight;
-    }
+    public void setNetWeight(double netWeight);
 
-    public double getGrossWeight() {
-        return grossWeight;
-    }
+    public double getGrossWeight();
 
-    public void setGrossWeight(double grossWeight) {
-        this.grossWeight = grossWeight;
-    }
+    public void setGrossWeight(double grossWeight);
 
     @Override
-    public String toString() {
-        return "(id=" + id + ")" + "standard container";
-    }
+    public String toString();
 }

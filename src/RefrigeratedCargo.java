@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 
-public class RefrigeratedCargo extends Container{
+public class RefrigeratedCargo extends HeavyCargo {
 
     private double electricityVoltage;
 
