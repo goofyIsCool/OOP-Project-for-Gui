@@ -63,6 +63,6 @@ public class StandardContainer implements Container {
 
     @Override
     public String toString() {
-        return "(id=" + id + ")" + "standard container";
+        return "(id=" + id + ")" + " Standard container";
     }
 }

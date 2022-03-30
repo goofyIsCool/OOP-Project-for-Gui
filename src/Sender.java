@@ -1,4 +1,7 @@
-import java.nio.charset.StandardCharsets;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 public class Sender {
     protected static int n;
@@ -49,10 +52,30 @@ public class Sender {
         this.address = address;
     }
 
-    // LocalDate getDateOfBirth(String PESEL);
+
+    public LocalDate getDateOfBirth() throws WrongPesel {
+        String year = PESEL.substring(0, 2);
+        String month = PESEL.substring(2, 4);
+        String day = PESEL.substring(4, 6);
+
+        if (Integer.parseInt(month) <= 12) {
+            year = String.valueOf(Integer.parseInt(year) + 1900);
+        }
+        else if (Integer.parseInt(month) > 12) {
+            year = String.valueOf(Integer.parseInt(year) + 2000);
+            month = String.valueOf(Integer.parseInt(month) - 20);
+
+            if (Integer.parseInt(month) < 10) month = "0" + month;
+        }
+
+        if (Integer.parseInt(year)%4!=0 && day.equals("29") && month.equals("02")){
+            throw new WrongPesel("Wrong pesel");
+        }
+        else return LocalDate.parse(year + "-" + month + "-" + day);
+    }
 
     @Override
-    public String toString(){
-        return "(id="+id+")"+name+" "+surname+", PESEL:" + getPESEL() + ", Address:" + address;
+    public String toString() {
+        return "(id=" + id + ")" + name + " " + surname + ", PESEL:" + getPESEL() + ", Address:" + address;
     }
 }
