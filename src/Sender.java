@@ -20,6 +20,10 @@ public class Sender {
         this.address = address;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -74,8 +78,12 @@ public class Sender {
         else return LocalDate.parse(year + "-" + month + "-" + day);
     }
 
+    public String print() {
+        return "(id=" + id + ")" + name + " " + surname + ", PESEL:" + PESEL + ", Address:" + address;
+    }
+
     @Override
     public String toString() {
-        return "(id=" + id + ")" + name + " " + surname + ", PESEL:" + getPESEL() + ", Address:" + address;
+        return id + "," + name + "," + surname + "," + PESEL + "," + address;
     }
 }

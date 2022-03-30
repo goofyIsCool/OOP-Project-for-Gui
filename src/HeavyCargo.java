@@ -6,9 +6,12 @@ public class HeavyCargo extends StandardContainer {
         super(sender, security, tare, netWeight, grossWeight, certificates);
     }
 
-    @Override
-    public String toString() {
+    public String print() {
         return "(id=" + id + ") Heavy container";
     }
 
+    @Override
+    public String toString(){
+        return "heavy," + id + "," + sender.getId() + "," + security + "," + tare + "," + netWeight + "," + grossWeight;
+    }
 }

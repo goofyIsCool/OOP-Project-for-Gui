@@ -1,27 +1,73 @@
 import java.util.LinkedList;
 
-public interface Container {
+public abstract class Container {
 
-    public Sender getSender();
+    public static int n;
+    protected int id;
 
-    public void setSender(Sender sender);
+    protected Sender sender;
+    protected String security;
+    protected double tare;
+    protected double netWeight;
+    protected double grossWeight;
+    protected LinkedList<String> certificates;
 
-    public String getSecurity();
+    public Container(Sender sender, String security, double tare, double netWeight, double grossWeight, LinkedList<String> certificates){
+        this.id = n++;
+        this.sender = sender;
+        this.security = security;
+        this.tare = tare; // The weight of the container
+        this.netWeight = netWeight;
+        this.grossWeight = grossWeight;
+        this.certificates = certificates;
+    }
 
-    public void setSecurity(String security);
+    public Sender getSender() {
+        return sender;
+    }
 
-    public double getTare();
+    public void setSender(Sender sender) {
+        this.sender = sender;
+    }
 
-    public void setTare(double tare);
+    public String getSecurity() {
+        return security;
+    }
 
-    public double getNetWeight();
+    public void setSecurity(String security) {
+        this.security = security;
+    }
 
-    public void setNetWeight(double netWeight);
+    public double getTare() {
+        return tare;
+    }
 
-    public double getGrossWeight();
+    public void setTare(double tare) {
+        this.tare = tare;
+    }
 
-    public void setGrossWeight(double grossWeight);
+    public double getNetWeight() {
+        return netWeight;
+    }
+
+    public void setNetWeight(double netWeight) {
+        this.netWeight = netWeight;
+    }
+
+    public double getGrossWeight() {
+        return grossWeight;
+    }
+
+    public void setGrossWeight(double grossWeight) {
+        this.grossWeight = grossWeight;
+    }
 
     @Override
-    public String toString();
+    public String toString(){
+        return id + "," + sender.getId() + "," + security + "," + tare + "," + netWeight + "," + grossWeight;
+    }
+
+    public String  print() {
+        return "(id=" + id + ")" + " Standard container";
+    }
 }

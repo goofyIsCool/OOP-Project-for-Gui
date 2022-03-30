@@ -8,9 +8,8 @@ public class Ship {
     private String homePort;
     private String origin;
     private String destination;
-
-    protected int maxNumContainers;
-    protected double maxWeight;
+    private int maxNumContainers;
+    private double maxWeight;
     private LinkedList<Container> containers; // All containers that were loaded on the ship.
 
     public Ship(String name, String homePort, String origin, String destination){
@@ -20,11 +19,6 @@ public class Ship {
         this.origin = origin;
         this.destination = destination;
         this.containers = new LinkedList<Container>();
-    }
-
-    public void defineCapacityDeadweight(int maxNumContainers, double maxWeight){
-        this.maxNumContainers = maxNumContainers;
-        this.maxWeight = maxWeight;
     }
 
     public int getId() {
@@ -74,14 +68,28 @@ public class Ship {
         return weight;
     }
 
+    public void defineCapacityDeadWeight(int maxNumContainers, double maxWeight){
+        this.maxNumContainers = maxNumContainers;
+        this.maxWeight = maxWeight;
+    }
+
+    public int getMaxNumContainers() {
+        return maxNumContainers;
+    }
+
+    public double getMaxWeight() {
+        return maxWeight;
+    }
+
+    //Instance off
     public void loadContainer(Container c) throws ShipOverloaded {
         if (!containers.contains(c) && containers.size() < maxNumContainers && getTotalWeightContainers() + c.getGrossWeight() <= maxWeight){
             containers.add(c);
-            System.out.println("Container:" + c + " has been successfully loaded on the " + name + ".");
+            System.out.println("Container: " + c + " has been successfully loaded on the " + name + ".");
         }
         else{
             System.out.println(" Loading the container will exceed the permissible safe load capacity of the ship.");
-            throw new ShipOverloaded("Ship is already fully loaded.");
+            throw new ShipOverloaded("\nShip is already fully loaded.");
         }
     }
 
@@ -89,6 +97,10 @@ public class Ship {
 
     @Override
     public String toString(){
+        return id + "," + name + "," + homePort + "," + origin + "," + destination + "," + maxNumContainers + "," + maxWeight;
+    }
+
+    public String print(){
         return "(id=" + id + ") Ship: " + name + ", Home Port: " + homePort + ", Origin: " + origin + ", Destination" + destination + ".";
     }
 }

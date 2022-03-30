@@ -8,4 +8,9 @@ public class RefrigeratedCargo extends HeavyCargo {
         super(sender, security, tare, netWeight, grossWeight, certificates);
         this.electricityVoltage = voltage;
     }
+
+    @Override
+    public String toString(){
+        return "refrigerated," + id + "," + sender.getId() + "," + security + "," + tare + "," + netWeight + "," + grossWeight + "," + electricityVoltage;
+    }
 }

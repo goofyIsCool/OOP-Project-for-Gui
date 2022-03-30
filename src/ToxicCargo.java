@@ -7,4 +7,9 @@ public class ToxicCargo extends HeavyCargo {
     public ToxicCargo(Sender sender, String security, double tare, double netWeight, double grossWeight, LinkedList<String> certificates) {
         super(sender, security, tare, netWeight, grossWeight, certificates);
     }
+
+    @Override
+    public String toString(){
+        return "toxic," + id + "," + sender.getId() + "," + security + "," + tare + "," + netWeight + "," + type;
+    }
 }
