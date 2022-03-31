@@ -130,7 +130,6 @@ public class Main {
     }
 
     public static void createContainer() throws ShipOverloaded {
-
         clearScreen();
         System.out.println("----Creating a Container----");
         Sender sender = null;
@@ -181,7 +180,7 @@ public class Main {
         try {
             data = new FileWriter("data/" + name + ".txt");
             BufferedWriter bw = new BufferedWriter(data);
-            System.out.println("Saving " + name + "data");
+//            System.out.println("Saving " + name + "data");
             for (T obj : list) {
                 bw.write(obj.toString() + "\n");
             }
@@ -197,7 +196,7 @@ public class Main {
         try {
             data = new FileWriter("data/" + name + ".txt");
             BufferedWriter bw = new BufferedWriter(data);
-            System.out.println("Saving " + name + "data");
+//            System.out.println("Saving " + name + "data");
             for (Map.Entry<T, K> obj : map.entrySet()) {
                 bw.write(obj.getValue().toString() + "\n");
             }
