@@ -24,6 +24,10 @@ public class Sender {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -84,6 +88,6 @@ public class Sender {
 
     @Override
     public String toString() {
-        return id + "," + name + "," + surname + "," + PESEL + "," + address;
+        return id + ";" + name + ";" + surname + ";" + PESEL + ";" + address;
     }
 }

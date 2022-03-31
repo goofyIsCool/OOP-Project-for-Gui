@@ -85,7 +85,6 @@ public class Ship {
     public void loadContainer(Container c) throws ShipOverloaded {
         if (!containers.contains(c) && containers.size() < maxNumContainers && getTotalWeightContainers() + c.getGrossWeight() <= maxWeight){
             containers.add(c);
-            System.out.println("Container: " + c + " has been successfully loaded on the " + name + ".");
         }
         else{
             System.out.println(" Loading the container will exceed the permissible safe load capacity of the ship.");
@@ -93,14 +92,15 @@ public class Ship {
         }
     }
 
-    public void unloadContainer(Container c){}
-
-    @Override
-    public String toString(){
-        return id + "," + name + "," + homePort + "," + origin + "," + destination + "," + maxNumContainers + "," + maxWeight;
-    }
+    public void unloadContainer(Container c) {}
 
     public String print(){
         return "(id=" + id + ") Ship: " + name + ", Home Port: " + homePort + ", Origin: " + origin + ", Destination" + destination + ".";
     }
+
+    @Override
+    public String toString(){
+        return id + ";" + name + ";" + homePort + ";" + origin + ";" + destination + ";" + maxNumContainers + ";" + maxWeight;
+    }
+
 }

@@ -2,7 +2,7 @@ import java.util.LinkedList;
 
 public class HeavyCargo extends StandardContainer {
 
-    public HeavyCargo(Sender sender, String security, double tare, double netWeight, double grossWeight, LinkedList<String> certificates) {
+    public HeavyCargo(Sender sender, String security, double tare, double netWeight, double grossWeight,String certificates) {
         super(sender, security, tare, netWeight, grossWeight, certificates);
     }
 
@@ -12,6 +12,6 @@ public class HeavyCargo extends StandardContainer {
 
     @Override
     public String toString(){
-        return "heavy," + id + "," + sender.getId() + "," + security + "," + tare + "," + netWeight + "," + grossWeight;
+        return "Heavy;" + id + ";" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight;
     }
 }

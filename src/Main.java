@@ -1,28 +1,50 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Scanner;
-
+import java.util.*;
 
 public class Main {
 
     public static Scanner sc = new Scanner(System.in);
-    public static LinkedList<Ship> ships = new LinkedList<>();
-    public static LinkedList<Container> containersShip = new LinkedList<>();
+    public static HashMap<Integer, Ship> ships = new HashMap<>();
+    public static HashMap<Integer, Sender> senders = new HashMap<>();
     public static LinkedList<Container> containersWarehouse = new LinkedList<>();
-    public static LinkedList<Sender> senders = new LinkedList<>();
 
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+    //https://www.delftstack.com/howto/java/java-clear-console/
+    public static void clearScreen(){
+        try{
+            String operatingSystem = System.getProperty("os.name"); //Check the current operating system
+
+            if(operatingSystem.contains("Windows")){
+                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
+                Process startProcess = pb.inheritIO().start();
+                startProcess.waitFor();
+            } else {
+
+                ProcessBuilder pb = new ProcessBuilder("clear");
+                Process startProcess = pb.inheritIO().start();
+
+                startProcess.waitFor();
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
     }
 
-    public static int inputInt(String line) {
-        return Integer.parseInt(line);
+    public static <T, K> void list(HashMap<T, K> hm) {
+        hm.forEach((key, value) -> System.out.println(value.toString()));
     }
 
-    public static double inputDouble(String line) {
-        return Double.parseDouble(line);
+    public static <K, T> K getK(HashMap<T, K> hm, String name) {
+        clearScreen();
+        System.out.println("-------" + name + "-------");
+        System.out.println("Choose a " + name + ": ");
+
+        list(hm);
+
+        System.out.println("-------END-------");
+        System.out.print("input: ");
+        int input = (Integer.parseInt(sc.nextLine()));
+
+        return hm.get(input);
     }
 
     public static void createShip() {
@@ -43,7 +65,7 @@ public class Main {
         String destination = sc.nextLine();
 
         Ship ship = new Ship(shipName, homePort, origin, destination);
-        ships.add(ship);
+        ships.put(ship.getId(), ship);
 
         System.out.println("Please specify the capacity and deadweight of the ship:");
         System.out.println("----------------");
@@ -51,35 +73,73 @@ public class Main {
         System.out.println("Dead weight - is the maximum weight, that a ship can carry.");
         System.out.println("----------------");
         System.out.print("Capacity = ");
-        int numContainers = inputInt(sc.nextLine());
+        int numContainers = Integer.parseInt(sc.nextLine());
         System.out.print("Dead weight = ");
-        int weight = inputInt(sc.nextLine());
+        int weight = Integer.parseInt(sc.nextLine());
 
-        ship.defineCapacityDeadWeight(numContainers,weight);
+        ship.defineCapacityDeadWeight(numContainers, weight);
         System.out.println("----------------");
         System.out.println("Your ship has been successfully created!");
     }
 
-    public static void listAllShips(){
-        Arrays.stream(ships.toArray()).forEach(System.out::println);
+    public static Sender createSender() {
+
+        System.out.println("-------Sender-------");
+        System.out.print("Name:");
+        String senderName = sc.nextLine();
+        System.out.print("Surname:");
+        String senderSurName = sc.nextLine();
+
+        String senderPESEL;
+        System.out.print("PESEL:");
+        while (!WrongPesel.checkIfValid(senderPESEL = sc.nextLine())) {
+            System.out.println("Wrong PESEL, please try again!");
+            senderPESEL = sc.nextLine();
+        }
+
+        System.out.print("Address:");
+        String senderAddress = sc.nextLine();
+        Sender sender = new Sender(senderName, senderSurName, senderPESEL, senderAddress);
+
+        senders.put(sender.getId(), sender);
+
+        return sender;
     }
 
-    public static void createContainer() {
+    public static Container container(String data) {
+        String[] tmp = data.split(";");
+        Container c = null;
+        int id = Integer.parseInt(tmp[1]);
+        Sender s = senders.get(Integer.parseInt(tmp[2]));
+        int ship_id = Integer.parseInt(tmp[3]);
+
+        switch (tmp[0]) {
+            case "Standard" -> c = new StandardContainer(s, tmp[4], Double.parseDouble(tmp[5]), Double.parseDouble(tmp[6]), Double.parseDouble(tmp[7]), tmp[8]);
+            case "Heavy" -> c = new HeavyCargo(s, tmp[4], Double.parseDouble(tmp[5]), Double.parseDouble(tmp[6]), Double.parseDouble(tmp[7]), tmp[8]);
+            case "Refrigerated" -> c = new RefrigeratedCargo(s, tmp[4], Double.parseDouble(tmp[5]), Double.parseDouble(tmp[6]), Double.parseDouble(tmp[7]), tmp[8], Double.parseDouble(tmp[9]));
+            case "Liquid" -> c = new LiquidCargo(s, tmp[4], Double.parseDouble(tmp[5]), Double.parseDouble(tmp[6]), Double.parseDouble(tmp[7]), tmp[8]);
+            case "Explosive" -> c = new ExplosiveCargo(s, tmp[4], Double.parseDouble(tmp[5]), Double.parseDouble(tmp[6]), Double.parseDouble(tmp[7]), tmp[8]);
+            case "Toxic" -> c = new ToxicCargo(s, tmp[4], Double.parseDouble(tmp[5]), Double.parseDouble(tmp[6]), Double.parseDouble(tmp[7]), tmp[8]);
+        }
+
+        assert c != null;
+        c.setId(id);
+        c.setShipId(ship_id);
+
+        return c;
+    }
+
+    public static void createContainer() throws ShipOverloaded {
+
         clearScreen();
         System.out.println("----Creating a Container----");
-        System.out.println("In order to create a container, you need to specify a sender.");
-
-        Sender sender = getOrCreateSender();
-
-        System.out.println("Container");
-        System.out.print("Security: ");
-        String security = sc.nextLine();
-        System.out.print("Tare: ");
-        double tare = inputDouble(sc.nextLine());
-        System.out.print("Net Weight: ");
-        double netWeight = inputDouble(sc.nextLine());
-        System.out.print("Gross Weight: ");
-        double grossWeight = inputDouble(sc.nextLine());
+        Sender sender = null;
+        if(!senders.isEmpty()){
+            sender = getK(senders, "Sender");
+        }else{
+            System.out.println("In order to create a container, you need to specify a sender.");
+            sender = createSender();
+        }
 
         System.out.println("-------Container-------");
         System.out.println("Choose the type of the container");
@@ -91,211 +151,134 @@ public class Main {
         System.out.println("6. Toxic Container");
         System.out.println("-------END-------");
         System.out.print("Input: ");
-        int containerType = (inputInt(sc.nextLine()));
+        int containerType = (Integer.parseInt(sc.nextLine()));
 
-        LinkedList<String> certificates = new LinkedList<>();
-        Container container;
-        switch (containerType) {
-            case 1:
-            default:
-                container = new StandardContainer(sender, security, tare, netWeight, grossWeight, certificates);
-                break;
-            case 2:
-                container = new HeavyCargo(sender, security, tare, netWeight, grossWeight, certificates);
-                break;
-            case 3:
-                container = new RefrigeratedCargo(sender, security, tare, netWeight, grossWeight, certificates, 10);
-                break;
-            case 4:
-                container = new LiquidCargo(sender, security, tare, netWeight, grossWeight, certificates);
-                break;
-            case 5:
-                container = new ExplosiveCargo(sender, security, tare, netWeight, grossWeight, certificates);
-                break;
-            case 6:
-                container = new ToxicCargo(sender, security, tare, netWeight, grossWeight, certificates);
-                break;
-        }
+        String data = containerType + ";" + sender.getId() + ";";
+        System.out.println("Container");
+        System.out.print("Security: ");
+        data += sc.nextLine() + ";";
+        System.out.print("Tare: ");
+        data += sc.nextLine() + ";";
+        System.out.print("Net Weight: ");
+        data += sc.nextLine() + ";";
+        System.out.print("Gross Weight: ");
+        data += sc.nextLine() + ";";
 
-        containersShip.add(container);
-    }
+        Container container = container(data);
+        System.out.println("Loading container...");
+        Ship ship = getK(ships, "Ship");
+        container.setShipId(ship.getId());
 
-    public static void listAllContainers() {
-        System.out.println("Containers that are on ship:");
-        if (containersShip.isEmpty()) System.out.println("There are no containers on ships.");
-        else Arrays.stream(containersShip.toArray()).forEach(System.out::println);
-
-        System.out.println("Containers that are stored in the warehouse:");
-        if (containersWarehouse.isEmpty()) System.out.println("There are no containers in the warehouse.");
-        else containersWarehouse.stream().forEach(e-> System.out.println(e.print()));
-    }
-
-    public static Sender getOrCreateSender() {
-        clearScreen();
-        System.out.println("-------Sender-------");
-        System.out.println("Choose your sender or create one: ");
-        for (int i = 0; i < senders.size(); i++) {
-            Sender s = senders.get(i);
-            System.out.println(i + 1 + ". " + s);
-        }
-        System.out.println("0. Create a new Sender: ");
-        System.out.println("-------END-------");
-        System.out.print("input: ");
-        int senderInput = (inputInt(sc.nextLine()));
-        System.out.println();
-
-        Sender sender;
-        if (senderInput == 0 || senders.isEmpty()) {
-            System.out.println("Please provide all the information about the sender: ");
-            System.out.print("Name:");
-            String senderName = sc.nextLine();
-            System.out.print("Surname:");
-            String senderSurName = sc.nextLine();
-
-            System.out.print("PESEL:");
-            String senderPESEL = sc.nextLine();
-            while(!WrongPesel.checkIfValid(senderPESEL)) {
-                System.out.println("Wrong PESEL, please try again!");
-                senderPESEL = sc.nextLine();
-            }
-
-            System.out.print("Address:");
-            String senderAddress = sc.nextLine();
-            sender = new Sender(senderName, senderSurName, senderPESEL, senderAddress);
-        } else {
-            sender = senders.get(senderInput - 1);
-        }
-
-        if (!senders.contains(sender)) senders.add(sender);
-
-        return sender;
-    }
-
-    public static void loadContainer() throws ShipOverloaded {
-        clearScreen();
-        int input;
-        Ship ship;
-        Container container;
-        if (ships.isEmpty()) {
-            System.out.println("There are no ships to load containers onto.");
-            System.out.println("Would you like to create a ship? y/n");
-            System.out.print("Input:");
-            String inputS = sc.nextLine();
-            if (inputS.equals("y")||inputS.equals("Y")) {
-                createShip();
-                ship = ships.get(0);
-            }
-            else return;
-        }
-        else {
-            System.out.println("Choose a ship.");
-            Arrays.stream(ships.toArray()).forEach(System.out::println);
-            System.out.print("Input:");
-            input = inputInt(sc.nextLine());
-            ship = ships.get(input);
-        }
-
-        if (containersShip.isEmpty()) {
-            System.out.println("There are no containers to load onto the ship.");
-            System.out.println("Would you like to create a container? y/n");
-            System.out.print("Input:");
-            String inputS = sc.nextLine();
-            if (inputS.equals("y")||inputS.equals("Y")) {
-                createContainer();
-                container = containersShip.get(0);
-            }
-            else return;
-        }
-        else {
-            System.out.println("Choose a container you'd like to load.");
-            Arrays.stream(containersShip.toArray()).forEach(System.out::println);
-            System.out.print("Input:");
-            input = inputInt(sc.nextLine());
-            container = containersShip.get(input);
-        }
-
-        try{
+        try {
             ship.loadContainer(container);
-        }
-        catch (ShipOverloaded e){
+        } catch (ShipOverloaded e) {
             e.printStackTrace();
         }
-
     }
-
-    public static void unloadContainer(){
-        clearScreen();
-    }
-
-    public static void loadData(){}
 
     public static <T> void saveData(LinkedList<T> list, String name) throws IOException {
         FileWriter data;
-        try
-        {
-            data = new FileWriter("data/" + name +".txt", true);
+        try {
+            data = new FileWriter("data/" + name + ".txt");
             BufferedWriter bw = new BufferedWriter(data);
-            System.out.println("Saving " + name + "data:)");
-
-            for(T obj: list){
-                bw.write(obj.toString()+"\n");
+            System.out.println("Saving " + name + "data");
+            for (T obj : list) {
+                bw.write(obj.toString() + "\n");
             }
 
             bw.close();
-            System.out.println("Written successfully");
-        }
-        catch (IOException except)
-        {
+        } catch (IOException except) {
             except.printStackTrace();
+        }
+    }
+
+    public static <T, K> void saveData(HashMap<T, K> map, String name) throws IOException {
+        FileWriter data;
+        try {
+            data = new FileWriter("data/" + name + ".txt");
+            BufferedWriter bw = new BufferedWriter(data);
+            System.out.println("Saving " + name + "data");
+            for (Map.Entry<T, K> obj : map.entrySet()) {
+                bw.write(obj.getValue().toString() + "\n");
+            }
+
+            bw.close();
+        } catch (IOException except) {
+            except.printStackTrace();
+        }
+    }
+
+    public static void saveAttr() {
+        FileWriter data;
+        try {
+            data = new FileWriter("data/attr.txt");
+            BufferedWriter bw = new BufferedWriter(data);
+
+            bw.write("Ship;Sender;Container\n");
+            bw.write(Ship.n + ";" + Sender.n + ";" + Container.n);
+
+            bw.close();
+        } catch (IOException except) {
+            except.printStackTrace();
+        }
+    }
+
+    public static void loadAttr() throws IOException {
+        FileReader data;
+        try {
+            data = new FileReader("data/attr.txt");
+            BufferedReader bw = new BufferedReader(data);
+            String line = bw.readLine();
+            line = bw.readLine();
+            String[] tmp = line.split(";");
+            Ship.n = Integer.parseInt(tmp[0]);
+            Sender.n = Integer.parseInt(tmp[1]);
+            Container.n = Integer.parseInt(tmp[2]);
+            bw.close();
+        } catch (IOException ignored) {
         }
     }
 
     public static <T> void loadData(String name) throws IOException {
         FileReader data;
-        try
-        {
-            data = new FileReader("data/" + name +".txt");
+        try {
+            data = new FileReader("data/" + name + ".txt");
             BufferedReader bw = new BufferedReader(data);
             String line;
 
-            while((line=bw.readLine())!=null){
-                String[] tmp = line.split(",");
+            while ((line = bw.readLine()) != null) {
+                String[] tmp = line.split(";");
+                Ship ship;
+                int id;
                 switch (name) {
-                    case "ship":
-                        System.out.println(tmp[1]);
-                        Ship ship = new Ship(tmp[1], tmp[2], tmp[3], tmp[4]);
+                    case "ship" -> {
+                        id = Integer.parseInt(tmp[0]);
+                        ship = new Ship(tmp[1], tmp[2], tmp[3], tmp[4]);
                         ship.defineCapacityDeadWeight(Integer.parseInt(tmp[5]), Double.parseDouble(tmp[6]));
-                        ships.add(ship);
-                    case "sender":
-                        Sender sender = new Sender(tmp[0], tmp[1], tmp[2], tmp[3]);
-                        senders.add(sender);
-                    case "containersShip", "containersWarehouse":
-                        Container container = null;
-                        LinkedList<String> certificates = null;
-                        switch(tmp[0]){
-                            case "heavy":
-                                container = new HeavyCargo(senders.get(Integer.parseInt(tmp[1])), tmp[2], Double.parseDouble(tmp[3]), Double.parseDouble(tmp[4]), Double.parseDouble(tmp[4]), certificates);
-                            case "liquid":
-                                container = new LiquidCargo(senders.get(Integer.parseInt(tmp[1])), tmp[2], Double.parseDouble(tmp[3]), Double.parseDouble(tmp[4]), Double.parseDouble(tmp[4]), certificates);
-                            case "explosive":
-                                container = new ExplosiveCargo(senders.get(Integer.parseInt(tmp[1])), tmp[2], Double.parseDouble(tmp[3]), Double.parseDouble(tmp[4]), Double.parseDouble(tmp[4]), certificates);
-                            case "refrigerated":
-                                container = new RefrigeratedCargo(senders.get(Integer.parseInt(tmp[1])), tmp[2], Double.parseDouble(tmp[3]), Double.parseDouble(tmp[4]), Double.parseDouble(tmp[4]), certificates, Double.parseDouble(tmp[5]));
-                            case "toxic":
-                                container = new ToxicCargo(senders.get(Integer.parseInt(tmp[1])), tmp[2], Double.parseDouble(tmp[3]), Double.parseDouble(tmp[4]), Double.parseDouble(tmp[4]), certificates);
-                            case "standard":
-                                container = new StandardContainer(senders.get(Integer.parseInt(tmp[1])), tmp[2], Double.parseDouble(tmp[3]), Double.parseDouble(tmp[4]), Double.parseDouble(tmp[4]), certificates);
-                        }
-                        if (name.equals("containersShip")) containersShip.add(container);
-                        else containersWarehouse.add(container);
+                        ship.setId(id);
+                        ships.put(id, ship);
+                    }
+                    case "sender" -> {
+                        id = Integer.parseInt(tmp[0]);
+                        Sender sender = new Sender(tmp[1], tmp[2], tmp[3], tmp[4]);
+                        sender.setId(id);
+                        senders.put(id, sender);
+                    }
+                    case "containerShip", "containerWarehouse" -> {
+                        Container container = container(line);
+                        id = Integer.parseInt(tmp[1]);
+                        container.setId(id);
+                        if (name.equals("containerShip")) {
+                            int ship_id = Integer.parseInt(tmp[3]);
+                            ship = ships.get(ship_id);
+                            ship.loadContainer(container);
+                        } else containersWarehouse.add(container);
+                    }
                 }
             }
 
             bw.close();
-            System.out.println("Written successfully");
-        }
-        catch (IOException except)
-        {
+        } catch (IOException | ShipOverloaded except) {
         }
     }
 
@@ -303,11 +286,10 @@ public class Main {
         clearScreen();
 
         loadData("ship");
-        System.out.println(ships.get(0));
         loadData("sender");
-        loadData("containersShip");
-        loadData("containersWarehouse");
-
+        loadData("containerShip");
+        loadData("containerWarehouse");
+        loadAttr();
 
         System.out.println("<-Seaport Logistics->");
         int input = 1;
@@ -316,49 +298,33 @@ public class Main {
             System.out.println("-------Menu-------");
             System.out.println("1. Create a ship.");
             System.out.println("2. Create a container.");
-            System.out.println("3. Load a container.");
-            System.out.println("4. List all ships.");
-            System.out.println("5. Unload a container.");
-            System.out.println("6. List all containers.");
+            System.out.println("3. List all ships.");
+            System.out.println("4. List all senders.");
             System.out.println("0. Save & Exit.");
             System.out.println("-------END-------");
             System.out.print("Input: ");
 
             try {
-                input = (inputInt(sc.nextLine()));
+                input = (Integer.parseInt(sc.nextLine()));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
 
             switch (input) {
-                case 0:
+                case 0 -> {
                     saveData(ships, "ship");
-                    saveData(containersShip, "containerShip");
-                    saveData(containersWarehouse, "containersWarehouse");
+                    saveData(containersWarehouse, "containerWarehouse");
                     saveData(senders, "sender");
+                    saveAttr();
                     System.out.println("Quitting...");
-                    break;
-                case 1:
-                    createShip();
-                    break;
-                case 2:
-                    createContainer();
-                    break;
-                case 3:
-                    loadContainer();
-                    break;
-                case 4:
-                    listAllShips();
-                case 5:
-                    unloadContainer();
-                case 6:
-                    listAllContainers();
-                default:
-                    System.out.println("Wrong input!");
-                    break;
+                }
+                case 1 -> createShip();
+                case 2 -> createContainer();
+                case 3 -> list(ships);
+                case 4 -> list(senders);
+                default -> System.out.println("Wrong input!");
             }
         }
-
         sc.close();
     }
 }

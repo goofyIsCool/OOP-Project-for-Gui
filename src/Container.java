@@ -10,9 +10,10 @@ public abstract class Container {
     protected double tare;
     protected double netWeight;
     protected double grossWeight;
-    protected LinkedList<String> certificates;
+    protected String certificates;
+    protected int shipId;
 
-    public Container(Sender sender, String security, double tare, double netWeight, double grossWeight, LinkedList<String> certificates){
+    public Container(Sender sender, String security, double tare, double netWeight, double grossWeight, String certificates){
         this.id = n++;
         this.sender = sender;
         this.security = security;
@@ -20,6 +21,22 @@ public abstract class Container {
         this.netWeight = netWeight;
         this.grossWeight = grossWeight;
         this.certificates = certificates;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getShipId() {
+        return shipId;
+    }
+
+    public void setShipId(int shipId) {
+        this.shipId = shipId;
     }
 
     public Sender getSender() {
