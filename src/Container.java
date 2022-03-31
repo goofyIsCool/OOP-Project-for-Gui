@@ -67,7 +67,7 @@ public abstract class Container {
         return id + "," + sender.getId() + "," + security + "," + tare + "," + netWeight + "," + grossWeight;
     }
 
-    public String  print() {
+    public String print() {
         return "(id=" + id + ")" + " Standard container";
     }
 }
