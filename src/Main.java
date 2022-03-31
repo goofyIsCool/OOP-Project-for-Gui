@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -9,7 +8,6 @@ public class Main {
 
     public static Scanner sc = new Scanner(System.in);
     public static LinkedList<Ship> ships = new LinkedList<>();
-//    private HashMap<Ship, Container[]> containerShips = new HashMap<>();
     public static LinkedList<Container> containersShip = new LinkedList<>();
     public static LinkedList<Container> containersWarehouse = new LinkedList<>();
     public static LinkedList<Sender> senders = new LinkedList<>();
@@ -274,7 +272,7 @@ public class Main {
                         ships.add(ship);
                     case "sender":
                         Sender sender = new Sender(tmp[0], tmp[1], tmp[2], tmp[3]);
-
+                        
                         senders.add(sender);
                     case "containersShip", "containersWarehouse":
                         Container container = null;
