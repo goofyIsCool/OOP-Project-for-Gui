@@ -61,7 +61,7 @@ public class Main {
     }
 
     public static void listAllShips(){
-        ships.stream().forEach(e -> System.out.println(e.print()));
+        Arrays.stream(ships.toArray()).forEach(System.out::println);
     }
 
     public static void createContainer() {
@@ -123,13 +123,11 @@ public class Main {
     public static void listAllContainers() {
         System.out.println("Containers that are on ship:");
         if (containersShip.isEmpty()) System.out.println("There are no containers on ships.");
-        else containersShip.stream().forEach(e -> System.out.println(e.print()));
+        else Arrays.stream(containersShip.toArray()).forEach(System.out::println);
 
         System.out.println("Containers that are stored in the warehouse:");
-        if (containersWarehouse.isEmpty()) {
-            System.out.println("There are no containers in the warehouse.");
-        }
-        else containersWarehouse.stream().forEach(e -> System.out.println(e.print()));
+        if (containersWarehouse.isEmpty()) System.out.println("There are no containers in the warehouse.");
+        else containersWarehouse.stream().forEach(e-> System.out.println(e.print()));
     }
 
     public static Sender getOrCreateSender() {
@@ -171,10 +169,6 @@ public class Main {
         if (!senders.contains(sender)) senders.add(sender);
 
         return sender;
-    }
-
-    public static void listAllSenders(){
-        senders.stream().forEach(e -> System.out.println(e.print()));
     }
 
     public static void loadContainer() throws ShipOverloaded {
@@ -233,6 +227,8 @@ public class Main {
         clearScreen();
     }
 
+    public static void loadData(){}
+
     public static <T> void saveData(LinkedList<T> list, String name) throws IOException {
         FileWriter data;
         try
@@ -272,7 +268,6 @@ public class Main {
                         ships.add(ship);
                     case "sender":
                         Sender sender = new Sender(tmp[0], tmp[1], tmp[2], tmp[3]);
-                        
                         senders.add(sender);
                     case "containersShip", "containersWarehouse":
                         Container container = null;
@@ -292,7 +287,7 @@ public class Main {
                                 container = new StandardContainer(senders.get(Integer.parseInt(tmp[1])), tmp[2], Double.parseDouble(tmp[3]), Double.parseDouble(tmp[4]), Double.parseDouble(tmp[4]), certificates);
                         }
                         if (name.equals("containersShip")) containersShip.add(container);
-                        else if (name.equals("containersWarehouse")) containersWarehouse.add(container);
+                        else containersWarehouse.add(container);
                 }
             }
 
@@ -308,6 +303,7 @@ public class Main {
         clearScreen();
 
         loadData("ship");
+        System.out.println(ships.get(0));
         loadData("sender");
         loadData("containersShip");
         loadData("containersWarehouse");
@@ -324,7 +320,6 @@ public class Main {
             System.out.println("4. List all ships.");
             System.out.println("5. Unload a container.");
             System.out.println("6. List all containers.");
-            System.out.println("7. List all sedners.");
             System.out.println("0. Save & Exit.");
             System.out.println("-------END-------");
             System.out.print("Input: ");
@@ -354,16 +349,10 @@ public class Main {
                     break;
                 case 4:
                     listAllShips();
-                    break;
                 case 5:
                     unloadContainer();
-                    break;
                 case 6:
                     listAllContainers();
-                    break;
-                case 7:
-                    listAllSenders();
-                    break;
                 default:
                     System.out.println("Wrong input!");
                     break;
