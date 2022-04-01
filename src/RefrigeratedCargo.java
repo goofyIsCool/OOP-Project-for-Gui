@@ -11,6 +11,6 @@ public class RefrigeratedCargo extends HeavyCargo {
 
     @Override
     public String toString(){
-        return "Refrigerated;" + id + ";" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + electricityVoltage;
+        return "Refrigerated;" + id + ";" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates + ";" + electricityVoltage;
     }
 }

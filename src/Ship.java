@@ -1,6 +1,6 @@
-import java.util.LinkedList;
+import java.util.TreeSet;
 
-public class Ship {
+public class Ship implements Comparable<Ship>{
     public static int n;
     private int id;
 
@@ -10,7 +10,9 @@ public class Ship {
     private String destination;
     private int maxNumContainers;
     private double maxWeight;
-    private LinkedList<Container> containers; // All containers that were loaded on the ship.
+
+//    private LinkedList<Container> containers;
+    protected TreeSet<Container> containers; // All containers that were loaded on the ship.
 
     public Ship(String name, String homePort, String origin, String destination){
         this.id = n++;
@@ -18,7 +20,7 @@ public class Ship {
         this.homePort = homePort;
         this.origin = origin;
         this.destination = destination;
-        this.containers = new LinkedList<Container>();
+        this.containers = new TreeSet<>();
     }
 
     public int getId() {
@@ -81,6 +83,14 @@ public class Ship {
         return maxWeight;
     }
 
+    public TreeSet<Container> getContainers() {
+        return containers;
+    }
+
+    public void showAllContainers(){
+        containers.stream().forEach(System.out::println);
+    }
+
     //Instance off
     public void loadContainer(Container c) throws ShipOverloaded {
         if (!containers.contains(c) && containers.size() < maxNumContainers && getTotalWeightContainers() + c.getGrossWeight() <= maxWeight){
@@ -92,7 +102,13 @@ public class Ship {
         }
     }
 
-    public void unloadContainer(Container c) {}
+//    public void unloadContainer(Container c) {
+//        if (containers.isEmpty())
+//            System.out.println("There are no containers to be unloaded from the ship.");
+//        else {
+//            for ()
+//        }
+//    }
 
     public String print(){
         return "(id=" + id + ") Ship: " + name + ", Home Port: " + homePort + ", Origin: " + origin + ", Destination" + destination + ".";
@@ -103,4 +119,8 @@ public class Ship {
         return id + ";" + name + ";" + homePort + ";" + origin + ";" + destination + ";" + maxNumContainers + ";" + maxWeight;
     }
 
+    @Override
+    public int compareTo(Ship o) {
+        return Double.compare(this.maxWeight, o.maxWeight);
+    }
 }

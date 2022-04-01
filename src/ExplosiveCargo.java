@@ -8,6 +8,6 @@ public class ExplosiveCargo extends HeavyCargo {
 
     @Override
     public String toString(){
-        return "Explosive;" + id + ";" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight;
+        return "Explosive;" + id + ";" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;
     }
 }

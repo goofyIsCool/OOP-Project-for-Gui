@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 
-public abstract class Container {
-
+public abstract class Container{
+//     implements Comparable<Container>
     public static int n;
     protected int id;
 
@@ -13,7 +13,7 @@ public abstract class Container {
     protected String certificates;
     protected int shipId;
 
-    public Container(Sender sender, String security, double tare, double netWeight, double grossWeight, String certificates){
+    public Container(Sender sender, String security, double tare, double netWeight, double grossWeight, String certificates) {
         this.id = n++;
         this.sender = sender;
         this.security = security;
@@ -79,12 +79,18 @@ public abstract class Container {
         this.grossWeight = grossWeight;
     }
 
-    @Override
-    public String toString(){
-        return id + "," + sender.getId() + "," + security + "," + tare + "," + netWeight + "," + grossWeight;
-    }
-
-    public String  print() {
+    public String print() {
         return "(id=" + id + ")" + " Standard container";
     }
+
+    @Override
+    public String toString() {
+        return id + "," + sender.getId() + "," + security + "," + tare + "," + netWeight + "," + grossWeight + ";" + certificates;
+    }
+
+//    @Override
+//    public int compareTo(Container o) {
+//        Ship s1 =
+//        return this.getName().compareTo(o.getName());
+//    }
 }

@@ -10,6 +10,6 @@ public class ToxicCargo extends HeavyCargo {
 
     @Override
     public String toString(){
-        return "Toxic;" + id + ";" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight;
+        return "Toxic;" + id + ";" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;
     }
 }
