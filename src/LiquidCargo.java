@@ -8,6 +8,6 @@ public class LiquidCargo extends StandardContainer {
 
     @Override
     public String toString(){
-        return "Liquid;" + id + ";" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;
+        return  id + ";" + "Liquid;" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;
     }
 }

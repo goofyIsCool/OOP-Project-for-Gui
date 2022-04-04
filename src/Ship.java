@@ -1,6 +1,9 @@
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeSet;
 
-public class Ship implements Comparable<Ship>{
+public class Ship{
     public static int n;
     private int id;
 
@@ -10,9 +13,7 @@ public class Ship implements Comparable<Ship>{
     private String destination;
     private int maxNumContainers;
     private double maxWeight;
-
-//    private LinkedList<Container> containers;
-    protected TreeSet<Container> containers; // All containers that were loaded on the ship.
+    protected HashMap<Integer, Container> containers = new HashMap<>(); // All containers that were loaded on the ship.
 
     public Ship(String name, String homePort, String origin, String destination){
         this.id = n++;
@@ -20,7 +21,6 @@ public class Ship implements Comparable<Ship>{
         this.homePort = homePort;
         this.origin = origin;
         this.destination = destination;
-        this.containers = new TreeSet<>();
     }
 
     public int getId() {
@@ -63,8 +63,9 @@ public class Ship implements Comparable<Ship>{
 
     public double getTotalWeightContainers(){
         double weight = 0;
-        for (Container c: containers) {
-            weight += c.getGrossWeight();
+
+        for (Map.Entry<Integer,Container> obj: containers.entrySet()) {
+            weight += obj.getValue().getGrossWeight();
         }
 
         return weight;
@@ -83,32 +84,46 @@ public class Ship implements Comparable<Ship>{
         return maxWeight;
     }
 
-    public TreeSet<Container> getContainers() {
+    public HashMap<Integer, Container> getContainers() {
         return containers;
     }
 
     public void showAllContainers(){
-        containers.stream().forEach(System.out::println);
+        containers.forEach((key, value) -> System.out.println(value.toString()));
     }
 
     //Instance off
     public void loadContainer(Container c) throws ShipOverloaded {
-        if (!containers.contains(c) && containers.size() < maxNumContainers && getTotalWeightContainers() + c.getGrossWeight() <= maxWeight){
-            containers.add(c);
+
+//        !containers.contains(c) &&
+        if ( containers.size() < maxNumContainers && getTotalWeightContainers() + c.getGrossWeight() <= maxWeight){
+            containers.put(c.getId(), c);
         }
         else{
             System.out.println(" Loading the container will exceed the permissible safe load capacity of the ship.");
             throw new ShipOverloaded("\nShip is already fully loaded.");
         }
+
     }
 
-//    public void unloadContainer(Container c) {
-//        if (containers.isEmpty())
-//            System.out.println("There are no containers to be unloaded from the ship.");
-//        else {
-//            for ()
-//        }
-//    }
+    public void unloadContainer(Container c) {
+        if (containers.isEmpty())
+            System.out.println("There are no containers to be unloaded from the ship.");
+        else {
+            containers.remove(c.getId());
+            System.out.println("Your container has been unloaded onto a train");
+        }
+    }
+
+    public void unloadContainer(Container c, Warehouse warehouse, int now) {
+        if (containers.isEmpty())
+            System.out.println("There are no containers to be unloaded from the ship.");
+        else {
+            warehouse.loadContainer(c, now);
+            containers.remove(c.getId());
+            System.out.println("Your container has been moved to the Warehouse.");
+        }
+    }
 
     public String print(){
         return "(id=" + id + ") Ship: " + name + ", Home Port: " + homePort + ", Origin: " + origin + ", Destination" + destination + ".";
@@ -117,10 +132,5 @@ public class Ship implements Comparable<Ship>{
     @Override
     public String toString(){
         return id + ";" + name + ";" + homePort + ";" + origin + ";" + destination + ";" + maxNumContainers + ";" + maxWeight;
-    }
-
-    @Override
-    public int compareTo(Ship o) {
-        return Double.compare(this.maxWeight, o.maxWeight);
     }
 }

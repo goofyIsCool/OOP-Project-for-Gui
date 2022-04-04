@@ -71,7 +71,7 @@ public class Sender {
         }
         else if (Integer.parseInt(month) > 12) {
             year = String.valueOf(Integer.parseInt(year) + 2000);
-            month = String.valueOf(Integer.parseInt(month) - 20);
+            month = String.valueOf(Integer.parseInt(month) % 20);
 
             if (Integer.parseInt(month) < 10) month = "0" + month;
         }

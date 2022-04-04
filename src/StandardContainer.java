@@ -5,7 +5,12 @@ public class StandardContainer extends Container {
     }
 
     @Override
+    public int compareTo(Container o) {
+        return this.getGrossWeight() > o.getGrossWeight() ? 1 : (this.getGrossWeight() == o.getGrossWeight() ? 0 : -1);
+    }
+
+    @Override
     public String toString(){
-        return "Standard;" + id + ";" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;
+        return  id + ";" + "Standard;" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;
     }
 }

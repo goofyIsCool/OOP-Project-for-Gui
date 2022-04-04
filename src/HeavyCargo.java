@@ -12,6 +12,6 @@ public class HeavyCargo extends StandardContainer {
 
     @Override
     public String toString(){
-        return "Heavy;" + id + ";" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;
+        return id + ";" + "Heavy;" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;
     }
 }
