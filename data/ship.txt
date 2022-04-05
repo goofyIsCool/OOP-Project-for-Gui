@@ -1,5 +1,5 @@
 ShipId;Name;HomePort;Origin;Destination
-3;A;koko;madagaskar;Nigeria;1;10.0
-2;Cruise;Italy;Croatia;Hawaii;1;100.0
 0;Titanic;London;CHina;NY;4;120.0
 1;DawidDo;WAKANDA FOREVER;Uganda;Mars;10;1000.0
+2;Cruise;Italy;Croatia;Hawaii;1;100.0
+3;A;koko;madagaskar;Nigeria;1;10.0

@@ -1,23 +1,37 @@
 public class ThreadTimer extends Thread{
 
     public static int days = 0;
+    public static int seconds = 0;
 
     public void run() {
-        // increase number of days every 5s.
         while (true){
-
             try {
-                Thread.sleep(5000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
             increaseNumberOfDays();
         }
     }
 
     public synchronized static void increaseNumberOfDays (){
-        days += 1;
-        System.out.println("Day"+days);
+        seconds += 1;
+        days = seconds/5;
+    }
+
+    public static int getDays() {
+        return days;
+    }
+
+    public static int getSeconds() {
+        return seconds;
+    }
+
+    public static void setDays(int days) {
+        ThreadTimer.days = days;
+    }
+
+    public static void setSeconds(int seconds) {
+        ThreadTimer.seconds = seconds;
     }
 }

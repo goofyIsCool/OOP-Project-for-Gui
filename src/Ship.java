@@ -89,7 +89,8 @@ public class Ship{
     }
 
     public void showAllContainers(){
-        containers.forEach((key, value) -> System.out.println(value.toString()));
+        if (containers.isEmpty()) System.out.println("There are no containers on this ship.");
+        else containers.forEach((key, value) -> System.out.println(value.toString()));
     }
 
     //Instance off
@@ -111,15 +112,15 @@ public class Ship{
             System.out.println("There are no containers to be unloaded from the ship.");
         else {
             containers.remove(c.getId());
-            System.out.println("Your container has been unloaded onto a train");
+            System.out.println("Your container has been moved to the train.");
         }
     }
 
-    public void unloadContainer(Container c, Warehouse warehouse, int now) {
+    public void unloadContainer(Container c, Warehouse warehouse, int seconds) {
         if (containers.isEmpty())
             System.out.println("There are no containers to be unloaded from the ship.");
         else {
-            warehouse.loadContainer(c, now);
+            warehouse.loadContainer(c, seconds);
             containers.remove(c.getId());
             System.out.println("Your container has been moved to the Warehouse.");
         }

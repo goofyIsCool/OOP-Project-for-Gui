@@ -1,12 +1,8 @@
-import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.TreeSet;
 
 public class Warehouse {
 
     private int maxNumberOfContainers; // Capacity
-
     private HashMap<Integer,Pair<Container, Integer>> containers = new HashMap<>(); // containers with time when loaded Container;
 
     public Warehouse(int maxNumberOfContainers) {
@@ -14,8 +10,8 @@ public class Warehouse {
     }
 
     // arrival - seconds since when Container arrived.
-    public void loadContainer (Container c, int arrival){
-        Pair<Container, Integer> pair = new Pair<>(c, arrival);
+    public void loadContainer(Container c, int seconds){
+        Pair<Container, Integer> pair = new Pair<>(c, seconds);
         if (containers.size() < maxNumberOfContainers) containers.put(c.getId(), pair);
     }
 
@@ -38,5 +34,4 @@ public class Warehouse {
     public void printAllContainers(){
         containers.forEach((K,V) -> System.out.println(V)) ;
     }
-
 }

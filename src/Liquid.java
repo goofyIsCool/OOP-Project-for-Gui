@@ -1,2 +1,4 @@
-package PACKAGE_NAME;public interface Liquid {
+public interface Liquid {
+
+    public double getLiquidWorth(double litres, double priceOfLitre);
 }

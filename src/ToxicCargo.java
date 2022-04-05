@@ -1,6 +1,5 @@
-import java.util.LinkedList;
 
-public class ToxicCargo extends HeavyCargo {
+public class ToxicCargo extends HeavyCargo{
 
     private String type; //powdery or liquid
 

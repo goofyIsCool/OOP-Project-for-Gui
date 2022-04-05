@@ -1,0 +1,2 @@
+ContainerId;Type;SenderId;ShipId;Security;Tare;Net;Gross;Certificate;seconds
+26;Explosive;8;0;pjatk;1.0;2.0;3.0;ssl;5

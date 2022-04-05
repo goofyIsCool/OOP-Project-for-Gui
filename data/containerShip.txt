@@ -1,5 +1,2 @@
 ContainerId;Type;SenderId;ShipId;Security;Tare;Net;Gross;Certificate
-24;Liquid;10;0;abdominal;20.0;20.0;40.0;xyz
-22;Toxic;0;1;Abba;3.0;30.0;33.0;alibaba
-12;Standard;2;0;SOLID;10.0;20.0;30.0;ez
-18;Standard;1;1;abba;10.0;20.0;30.0;xyz
+22;Toxic;10;1;Abba;3.0;30.0;33.0;alibaba
