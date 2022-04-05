@@ -1,3 +1,5 @@
+package Program;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -5,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import java.util.*;
+import Container.*;
 
 public class Main {
 
@@ -12,59 +15,36 @@ public class Main {
     public static LinkedList<Ship> ships = new LinkedList<>();
     public static LinkedList<Sender> senders = new LinkedList<>();
     public static Warehouse warehouse = new Warehouse(20);
-
-    public static int seconds = 0;
     public static String[] containerTypes = {"Standard", "Heavy", "Refrigerated", "Liquid", "Explosive", "Toxic"};
+    public static ThreadTimer timer = new ThreadTimer();
 
     //https://www.delftstack.com/howto/java/java-clear-console/
     public static void clearScreen() {
-        try {
-            String operatingSystem = System.getProperty("os.name"); //Check the current operating system
+    try {
+        String operatingSystem = System.getProperty("os.name"); //Check the current operating system
 
-            if (operatingSystem.contains("Windows")) {
-                ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
-                Process startProcess = pb.inheritIO().start();
-                startProcess.waitFor();
-            } else {
-                ProcessBuilder pb = new ProcessBuilder("clear");
-                Process startProcess = pb.inheritIO().start();
+        if (operatingSystem.contains("Windows")) {
+            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "cls");
+            Process startProcess = pb.inheritIO().start();
+            startProcess.waitFor();
+        } else {
+            ProcessBuilder pb = new ProcessBuilder("clear");
+            Process startProcess = pb.inheritIO().start();
 
-                startProcess.waitFor();
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+            startProcess.waitFor();
         }
+    } catch (Exception e) {
+        System.out.println(e);
+    }
     }
 
-//    public static <T> T input(T type){ // Input Control
-//        switch(type)
-//    }
+    public static void printInBlue(String str){
+        System.out.println(ConsoleColors.BLUE + str + ConsoleColors.RESET);
+    }
 
-//    public static <T, K> void list(HashMap<T, K> hm, String type) {
-//
-//        if (type.equals("Ship"))
-//            System.out.println("Id;Name;HomePort;Origin;Destination");
-//        else if (type.equals("Sender"))
-//            System.out.println("Id;Name;Surname;PESEL;Address");
-//
-//        hm.forEach((key, value) -> System.out.println(value.toString()));
-//    }
-//
-
-//    public static <T, K> void saveData(HashMap<T, K> map, String name) throws IOException {
-//        FileWriter data;
-//        try {
-//            data = new FileWriter("data/" + name + ".txt");
-//            BufferedWriter bw = new BufferedWriter(data);
-//
-//
-//
-//            bw.close();
-//        } catch (IOException except) {
-//            except.printStackTrace();
-//        }
-//    }
-
+    public static void printInGreen(String str){
+        System.out.println(ConsoleColors.GREEN + str + ConsoleColors.RESET);
+    }
 
     public static <T> void list(LinkedList<T> list, String type) {
 
@@ -122,8 +102,6 @@ public class Main {
         String destination = sc.nextLine();
 
         Ship ship = new Ship(shipName, homePort, origin, destination);
-//        ships.put(ship.getId(), ship);
-
         ships.add(ship);
 
         System.out.println("Please specify the capacity and deadweight of the ship:");
@@ -159,9 +137,6 @@ public class Main {
         System.out.print("Address:");
         String senderAddress = sc.nextLine();
         Sender sender = new Sender(senderName, senderSurName, senderPESEL, senderAddress);
-
-//        senders.put(sender.getId(), sender);
-
         senders.add(sender);
 
         return sender;
@@ -193,7 +168,6 @@ public class Main {
         System.out.println("----Creating a Container----");
         Sender sender = null;
         if (!senders.isEmpty()) {
-//            sender = getK(senders, "Sender");
             sender = getT(senders, "Sender");
         } else {
             System.out.println("In order to create a container, you need to specify a sender.");
@@ -212,7 +186,7 @@ public class Main {
         System.out.print("Input: ");
         int input = (Integer.parseInt(sc.nextLine()));
 
-        String data = containerTypes[input - 1] + ";" + Container.n++ + ";" + sender.getId() + ";" + " " + ";";
+        String data = Container.n++ + ";" + containerTypes[input - 1] + ";" + sender.getId() + ";" + " " + ";";
         System.out.println("Container");
         System.out.print("Security: ");
         data += sc.nextLine() + ";";
@@ -245,20 +219,18 @@ public class Main {
         Ship ship = getT(ships, "Ship");
         System.out.println("Choose a container to be unloaded");
         Container container = getK(ship.getContainers(), "Container");
-        ship.unloadContainer(container, warehouse, seconds);
+        ship.unloadContainer(container, warehouse, timer.getSeconds());
     }
 
-    public static <T> void saveData(LinkedList<T> list, String name) throws IOException {
+    public static <T> void saveData(LinkedList<T> list, String name, String path) throws IOException {
         FileWriter data;
         try {
-            data = new FileWriter("data/" + name + ".txt");
+            data = new FileWriter(path);
             BufferedWriter bw = new BufferedWriter(data);
 
             if (name.equals("ship")) {
-                ships.sort((s1, s2) -> (int) (s1.getMaxWeight() - s2.getMaxWeight()));
                 bw.write("ShipId;Name;HomePort;Origin;Destination\n");
             } else {
-                senders.sort(Comparator.comparing(Sender::getName));
                 bw.write("SenderId;Name;Surname;PESEL;Address\n");
             }
 
@@ -272,10 +244,10 @@ public class Main {
         }
     }
 
-    public static void saveContainersShip(LinkedList<Ship> ships) {
+    public static void saveContainersShip(LinkedList<Ship> ships, String path) {
         FileWriter data;
         try {
-            data = new FileWriter("data/containerShip.txt");
+            data = new FileWriter(path);
             BufferedWriter bw = new BufferedWriter(data);
             bw.write("ContainerId;Type;SenderId;ShipId;Security;Tare;Net;Gross;Certificate\n");
             LinkedList<Container> tmp = new LinkedList<>();
@@ -298,16 +270,15 @@ public class Main {
         }
     }
 
-    public static void saveContainersWareHouse(HashMap<Integer, Pair<Container, Integer>> ships) {
+    public static void saveContainersWareHouse(HashMap<Integer, Pair<Container, Integer>> list, String path) {
         FileWriter data;
         try {
-            data = new FileWriter("data/containerWarehouse.txt");
+            data = new FileWriter(path);
             BufferedWriter bw = new BufferedWriter(data);
 
-            for (Map.Entry<Integer, Pair<Container,Integer>> entry : ships.entrySet()) {
-                    for (Pair<Container,Integer> pair : entry.getValue()) {
-                    bw.write(pair.key + ";" + pair.value + "\n");
-                }
+            bw.write("ContainerId;Type;SenderId;ShipId;Security;Tare;Net;Gross;Certificate;seconds\n");
+            for (Map.Entry<Integer, Pair<Container, Integer>> obj : list.entrySet()){
+                bw.write(obj.getValue().key + ";" + obj.getValue().value);
             }
 
             bw.close();
@@ -316,14 +287,28 @@ public class Main {
         }
     }
 
+    public static void saveDataApp(String path) throws IOException {
+        saveData(ships, "ship", path + "/ship.txt");
+        saveData(senders, "sender", path + "/sender.txt");
+        saveContainersShip(ships, path + "/containerShip.txt");
+        saveContainersWareHouse(warehouse.getContainers(), path + "/containerWareHouse.txt");
+        if (!path.equals("DataUser")) saveAttr();
+    }
+
+    public static void saveDataForUser(String path) throws IOException {
+        ships.sort((s1, s2) -> (int) (s1.getMaxWeight() - s2.getMaxWeight()));
+        senders.sort(Comparator.comparing(Sender::getName));
+        saveDataApp(path);
+    }
+
     public static void saveAttr() {
         FileWriter data;
         try {
             data = new FileWriter("data/attr.txt");
             BufferedWriter bw = new BufferedWriter(data);
 
-            bw.write("Ship;Sender;Container\n");
-            bw.write(Ship.n + ";" + Sender.n + ";" + Container.n);
+            bw.write("Ship;Sender;Container;seconds\n");
+            bw.write(Ship.n + ";" + Sender.n + ";" + Container.n + ";" + timer.getSeconds());
 
             bw.close();
         } catch (IOException except) {
@@ -343,6 +328,10 @@ public class Main {
                 Ship.n = Integer.parseInt(tmp[0]);
                 Sender.n = Integer.parseInt(tmp[1]);
                 Container.n = Integer.parseInt(tmp[2]);
+
+                int s = Integer.parseInt(tmp[3]);
+                timer.setSeconds(s);
+                timer.setDays(s/5);
                 bw.close();
             } else
                 return;
@@ -385,8 +374,8 @@ public class Main {
                             ship = ships.get(ship_id);
                             ship.loadContainer(container);
                         } else {
+                            warehouse.loadContainer(container, Integer.parseInt(tmp[tmp.length-1]));
                         }
-                        ;
                     }
                 }
             }
@@ -397,56 +386,35 @@ public class Main {
     }
 
     public static void main(String[] args) throws ShipOverloaded, IOException, InterruptedException {
+
         clearScreen();
 
+        // Loading Data
         loadData("ship");
-        ships.sort((s1, s2) -> s1.getId() - s2.getId());
         loadData("sender");
-        senders.sort((s1, s2) -> s1.getId() - s2.getId());
         loadData("containerShip");
-
         loadData("containerWarehouse");
         loadAttr();
 
-//        System.out.println("\n" + ConsoleColors.RED + "RED COLORED" + ConsoleColors.RESET + " NORMAL");
+        //Time Thread
+        timer.start();
 
-        ThreadTimer timer = new ThreadTimer();
-
-        Runnable r = new Runnable() {
-
-            public void run() {
-
-                while (true) {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    seconds++;
-                }
-            }
-        };
-
-        new Thread(r).start();
-        //this line will execute immediately, not waiting for your task to complete
-
-
-        System.out.println("<-Seaport Logistics->");
+        //Menu
+        printInBlue("<-Seaport Logistics->");
         int input = 1;
-
         while (input != 0) {
-            System.out.println("-------Menu-------");
-            System.out.println("1. Create a ship.");
-            System.out.println("2. Create a container.");
-            System.out.println("3. Create a sender.");
-            System.out.println("4. Load a container.");
-            System.out.println("5. Unload a container.");
-            System.out.println("6. List all ships.");
-            System.out.println("7. List all senders.");
-            System.out.println("8. List all containers in the warehouse.");
-            System.out.println("9. List all containers based on a chosen ship.");
-            System.out.println("0. Save & Exit.");
-            System.out.println("-------END-------");
+            printInGreen("-------Menu-------\n" +
+                    "1. Create a ship.\n" +
+                    "2. Create a container.\n" +
+                    "3. Create a sender.\n" +
+                    "4. Load a container.\n" +
+                    "5. Unload a container.\n" +
+                    "6. List all ships.\n" +
+                    "7. List all senders.\n" +
+                    "8. List all containers in the warehouse.\n" +
+                    "9. List all containers based on a chosen ship.\n" +
+                    "0. Save & Exit.\n" +
+                    "-------END-------");
             System.out.print("Input: ");
 
             try {
@@ -457,13 +425,10 @@ public class Main {
 
             switch (input) {
                 case 0 -> {
-                    saveData(ships, "ship");
-//                    saveData(ships, "containerWarehouse");
-//                    saveData();
-                    saveContainers(ships);
-                    saveData(warehouse.getContainers(), "containerWarehouse");
-                    saveData(senders, "sender");
-                    saveAttr();
+                    //Saving data to txt
+                    saveDataApp("data"); // data unsorted for app
+                    saveDataForUser("DataUser"); // data sorted for user
+                    System.out.println("The data has been saved in the DataUser folder.");
                     System.out.println("Quitting...");
                 }
                 case 1 -> createShip();
@@ -474,10 +439,8 @@ public class Main {
                 case 6 -> list(ships, "Ship");
                 case 7 -> list(senders, "Sender");
                 case 8 -> warehouse.printAllContainers();
-                case 9 -> {
-                    Ship ship = getT(ships, "Ship");
-                    ship.showAllContainers();
-                }
+                case 9 -> getT(ships, "Ship").showAllContainers();
+
                 default -> System.out.println("Wrong input!");
             }
         }
