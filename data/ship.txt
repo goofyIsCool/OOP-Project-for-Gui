@@ -3,3 +3,4 @@ ShipId;Name;HomePort;Origin;Destination
 1;DawidDo;WAKANDA FOREVER;Uganda;Mars;10;1000.0
 2;Cruise;Italy;Croatia;Hawaii;1;100.0
 3;A;koko;madagaskar;Nigeria;1;10.0
+4;alaba;kebab;baranina;kurczak;3;150.0
