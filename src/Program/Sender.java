@@ -58,7 +58,6 @@ public class Sender {
         this.address = address;
     }
 
-
     public LocalDate getDateOfBirth() throws WrongPesel {
         String year = PESEL.substring(0, 2);
         String month = PESEL.substring(2, 4);

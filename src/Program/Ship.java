@@ -1,6 +1,7 @@
 package Program;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import Container.*;
 
@@ -108,23 +109,21 @@ public class Ship{
 
     }
 
-    public void unloadContainer(Container c) {
-        if (containers.isEmpty())
-            System.out.println("There are no containers to be unloaded from the ship.");
-        else {
-            containers.remove(c.getId());
-            System.out.println("Your container has been moved to the train.");
-        }
+    public void unloadContainer(Container c, Train train) { //Train
+        train.loadContainer(c);
+        containers.remove(c.getId());
+        System.out.println("Your container has been moved to the train.");
     }
 
-    public void unloadContainer(Container c, Warehouse warehouse, int seconds) {
-        if (containers.isEmpty())
-            System.out.println("There are no containers to be unloaded from the ship.");
-        else {
-            warehouse.loadContainer(c, seconds);
-            containers.remove(c.getId());
-            System.out.println("Your container has been moved to the Warehouse.");
-        }
+    public void unloadContainer(Container c, Warehouse warehouse, int seconds) { // Warehouse
+        warehouse.loadContainer(c, seconds);
+        containers.remove(c.getId());
+        System.out.println("Your container has been moved to the Warehouse.");
+    }
+
+    public void takeOff(LinkedList<Ship> ships){
+        ConsoleColors.printInGreen(this.name + " took off!");
+        ships.remove(this);
     }
 
     public String print(){

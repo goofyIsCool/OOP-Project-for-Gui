@@ -1,12 +1,31 @@
 package Program;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import Container.*;
 
 public class Warehouse {
 
-    private int maxNumberOfContainers; // Capacity
+    private final int maxNumberOfContainers; // Capacity
     private HashMap<Integer,Pair<Container, Integer>> containers = new HashMap<>(); // containers with time when loaded Container;
+
+    Thread thread = new Thread(()-> {
+
+        Iterator<Map.Entry<Integer, Pair<Container, Integer>>> iter = containers.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<Integer, Pair<Container, Integer>> entry = iter.next();
+
+            try {
+                IrresponsibleSenderWithDangerousGoods.checkIf(entry.getValue().key, entry.getValue().value);
+            } catch (IrresponsibleSenderWithDangerousGoods e) {
+                System.out.println(e.getMessage());
+                iter.remove();
+            }
+
+        }
+    });
 
     public Warehouse(int maxNumberOfContainers) {
         this.maxNumberOfContainers = maxNumberOfContainers;
@@ -18,23 +37,14 @@ public class Warehouse {
         if (containers.size() < maxNumberOfContainers) containers.put(c.getId(), pair);
     }
 
-    public boolean checkIfExpired(Container c, int maxNumberOfDays) throws IrresponsibleSenderWithDangerousGoods {
-        boolean expired = false;
-        Pair<Container, Integer> info = containers.get(c.getId());
-
-        if (info.value-maxNumberOfDays >= 0){
-            expired = true;
-            throw new IrresponsibleSenderWithDangerousGoods("");
-        }
-
-        return expired;
-    }
-
     public HashMap<Integer, Pair<Container, Integer>> getContainers() {
         return containers;
     }
 
     public void printAllContainers(){
-        containers.forEach((K,V) -> System.out.println(V)) ;
+        if (!containers.isEmpty())
+            containers.forEach((K,V) -> System.out.println(V.key)) ;
+        else
+            System.out.println("\nThere are no Containers in the warehouse\n");
     }
 }

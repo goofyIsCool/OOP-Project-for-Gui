@@ -2,7 +2,7 @@ package Container;
 
 import Program.*;
 
-public abstract class Container implements Comparable<Container>{
+public abstract class Container{
 
     public static int n;
     protected int id;

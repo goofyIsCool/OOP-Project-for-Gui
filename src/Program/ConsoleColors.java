@@ -11,4 +11,33 @@ public class ConsoleColors {
     public static final String PURPLE = "\033[0;35m";  // PURPLE
     public static final String CYAN = "\033[0;36m";    // CYAN
     public static final String WHITE = "\033[0;37m";   // WHITE
+
+    public static void printInBlue(String str) {
+        System.out.println(ConsoleColors.BLUE + str + ConsoleColors.RESET);
+    }
+
+    public static void printInGreen(String str) {
+        System.out.println(ConsoleColors.GREEN + str + ConsoleColors.RESET);
+    }
+
+    public static void printInRed(String str) {
+        System.out.println(ConsoleColors.RED + str + ConsoleColors.RESET);
+    }
+
+    public static void printInYellow(String str) {
+        System.out.println(ConsoleColors.YELLOW + str + ConsoleColors.RESET);
+    }
+
+    public static void printInPurple(String str) {
+        System.out.println(ConsoleColors.PURPLE + str + ConsoleColors.RESET);
+    }
+
+    public static void printInCyan(String str) {
+        System.out.println(ConsoleColors.CYAN + str + ConsoleColors.RESET);
+    }
+
+    public static void printInWhite(String str) {
+        System.out.println(ConsoleColors.WHITE + str + ConsoleColors.RESET);
+    }
+
 }
