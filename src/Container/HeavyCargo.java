@@ -5,8 +5,12 @@ import Program.*;
 
 public class HeavyCargo extends StandardContainer {
 
-    public HeavyCargo(Sender sender, String security, double tare, double netWeight, double grossWeight,String certificates) {
+    protected String doubleDoor;
+
+    public HeavyCargo(Sender sender, String security, double tare, double netWeight, double grossWeight, String certificates, String doubleDoor) {
         super(sender, security, tare, netWeight, grossWeight, certificates);
+
+        this.doubleDoor = doubleDoor;
     }
 
     public String print() {
@@ -15,6 +19,6 @@ public class HeavyCargo extends StandardContainer {
 
     @Override
     public String toString(){
-        return id + ";" + "Heavy;" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;
+        return id + ";" + "Heavy;" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates + ";" + doubleDoor;
     }
 }

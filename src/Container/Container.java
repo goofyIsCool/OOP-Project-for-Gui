@@ -14,6 +14,7 @@ public abstract class Container{
     protected double grossWeight;
     protected String certificates;
     protected int shipId;
+    protected int timeJoined = 0;
 
     public Container(Sender sender, String security, double tare, double netWeight, double grossWeight, String certificates) {
         this.id = n++;
@@ -79,6 +80,14 @@ public abstract class Container{
 
     public void setGrossWeight(double grossWeight) {
         this.grossWeight = grossWeight;
+    }
+
+    public int getTimeJoined() {
+        return timeJoined;
+    }
+
+    public void setTimeJoined(int timeJoined) {
+        this.timeJoined = timeJoined;
     }
 
     public String print() {

@@ -5,7 +5,7 @@ import Container.*;
 
 public class Train {
 
-    private int capacity;
+    private final int capacity;
     private int seconds; // Time when the train got full.
     private Thread thread = new Thread(() -> {
         ConsoleColors.printInRed("Train is full, wait for the next train to arrive.");
@@ -39,19 +39,19 @@ public class Train {
             containers.add(c);
     }
 
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public Thread getThread() {
-        return thread;
-    }
-
-    public LinkedList<Container> getContainers() {
-        return containers;
-    }
+//    public int getCapacity() {
+//        return capacity;
+//    }
+//
+//    public void setCapacity(int capacity) {
+//        this.capacity = capacity;
+//    }
+//
+//    public Thread getThread() {
+//        return thread;
+//    }
+//
+//    public LinkedList<Container> getContainers() {
+//        return containers;
+//    }
 }

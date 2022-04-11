@@ -8,6 +8,10 @@ public class StandardContainer extends Container {
         super(sender, security, tare, netWeight, grossWeight, certificates);
     }
 
+    public String print() {
+        return "(id=" + id + ") Standard container";
+    }
+
     @Override
     public String toString(){
         return  id + ";" + "Standard;" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;

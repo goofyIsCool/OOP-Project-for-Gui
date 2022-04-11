@@ -2,23 +2,21 @@ package Container;
 
 import Program.*;
 
-public class LiquidCargo extends HeavyCargo implements Liquid {
+public class LiquidCargo extends StandardContainer implements Liquid{
 
-    String type; // Liquid Type
-    double litres;
-    double priceOfLitre;
+    private final String substance; // Liquid Type
 
-    public LiquidCargo(Sender sender, String security, double tare, double netWeight, double grossWeight, String certificates) {
+    public LiquidCargo(Sender sender, String security, double tare, double netWeight, double grossWeight, String certificates, String substance) {
         super(sender, security, tare, netWeight, grossWeight, certificates);
+        this.substance = substance;
+    }
+
+    public String print() {
+        return "(id=" + id + ") Liquid container";
     }
 
     @Override
     public String toString(){
-        return  id + ";" + "Liquid;" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates;
-    }
-
-    @Override
-    public double getLiquidWorth(double litres, double priceOfLitre) {
-        return litres*priceOfLitre;
+        return  id + ";" + "Liquid;" + sender.getId() + ";" + shipId + ";" + security + ";" + tare + ";" + netWeight + ";" + grossWeight + ";" + certificates + ";" + substance;
     }
 }

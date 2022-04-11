@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Seaport Logistics:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Seaport_Logistics_jar</output-path>
+    <root id="archive" name="Seaport Logistics.jar">
+      <element id="module-output" name="Seaport Logistics" />
+      <element id="library" level="project" name="json-20140107" />
+    </root>
+  </artifact>
+</component>
