@@ -1,14 +1,2 @@
 SenderId;Name;Surname;PESEL;Address
-4;Autumn;Weimann;02291310170;Kiribati;0
-5;Cristobal;Goyette;02291310170;Kuwait;0
-2;Doug;Yundt;02291310170;Tanzania;0
-1;Freeman;Cormier;02291310170;Papua;0
-10;Jan;Nowak;02291310170;USA;0
-0;Linh;Ha;02291310170;Poland;0
-8;Madaline;Harber;02291310170;Uruguay;0
-3;Maia;Jacobi;02291310170;Niger;0
-11;Mia;Ha;02291310170;Poland;0
-6;Raleigh;Kautzer;02291310170;Germany;0
-9;Verlie;Rogahn;02291310170;Zambia;0
-7;Xander;Christiansen;02291310170;Angola;0
-12;Xander;Christiansen;02291310170;Angola;0
+0;Jan;Ha;02291310170;Polska;1

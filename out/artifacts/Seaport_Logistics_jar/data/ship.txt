@@ -1,8 +1,3 @@
 ShipId;Name;HomePort;Origin;Destination;maxNumAllContainers;maxWeightLoad;maxNumHeavy;maxNumToxicExplosive;maxNumElectric;departed
-1;A;koko;madagaskar;Nigeria;1;10.0;0;0;0;true
-3;A;koko;madagaskar;Nigeria;1;10.0;0;0;0;false
-6;BIG;BROTHER;IS ;WATCHING;10;10000.0;7;5;1;false
-2;Cruise;Italy;Croatia;Hawaii;1;100.0;0;0;0;false
-0;Titanic;London;CHina;NY;4;120.0;0;0;0;true
-4;alaba;kebab;baranina;kurczak;3;150.0;3;0;0;false
-5;mamamia;tu;lubi w dupe;alabama;3;250.0;3;0;0;false
+0;Titanic;London;China;New York;2;500.0;1;2;1;false
+1;abc;idk;somewhere;nigeria;10;1000.0;1;2;1;false

@@ -1,4 +1,2 @@
 ContainerId;Type;SenderId;ShipId;Security;Tare;Net;Gross;Certificate;seconds
-48;Liquid;2;0;SOLID;10.0;20.0;30.0;none;oil;2363
-52;Heavy;11;0;SOLID;10.0;20.0;30.0;none;yes;2354
-28;Heavy;1;0;amama;20.0;50.0;70.0;league;yes;176
+0;Standard;0;0;abc;50.0;100.0;150.0;none;157

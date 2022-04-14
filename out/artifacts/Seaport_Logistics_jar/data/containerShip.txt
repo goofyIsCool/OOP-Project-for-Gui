@@ -1,6 +1,2 @@
 ContainerId;Type;SenderId;ShipId;Security;Tare;Net;Gross;Certificate
-50;Refrigerated;4;6;None;50.0;50.0;100.0;none;no;100.0
-54;Toxic Liquid;5;6;SOLID;10.0;20.0;30.0;none;no;water;physical
-42;Toxic Powdery;0;6;SOLID;10.0;20.0;30.0;none;yes;biological
-44;Toxic Liquid;0;6;SOLID;10.0;20.0;30.0;none;no;Red bull;chemical
-46;Explosive;1;6;US Nation;10.0;20.0;30.0;all;no;6
+12;Toxic Powdery;0;1;solid;50.0;60.0;110.0;none;yes;chemical
