@@ -12,7 +12,7 @@ public class Main {
     public static LinkedList<Ship> ships = new LinkedList<>();
     public static LinkedList<Sender> senders = new LinkedList<>();
     public static Warehouse warehouse = new Warehouse(20);
-    public static Train train = new Train(10);
+    public static Train train = new Train(3);
     public static String[] containerTypes = {"Standard", "Heavy", "Refrigerated", "Liquid", "Explosive", "Toxic Liquid", "Toxic Powdery"};
     public static ThreadTimer timer = new ThreadTimer();
 

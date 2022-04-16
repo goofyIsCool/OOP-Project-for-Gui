@@ -126,9 +126,10 @@ public class Ship {
     }
 
     public void unloadContainer(Container c, Train train) { //Train
-        train.loadContainer(c);
-        containers.remove(c.getId());
-        System.out.println("Your container has been moved to the train.");
+        if (train.loadContainer(c))
+            containers.remove(c.getId());
+        else
+            System.out.println("No trains available.");
     }
 
     public void unloadContainer(Container c, Warehouse warehouse, int seconds) { // Warehouse

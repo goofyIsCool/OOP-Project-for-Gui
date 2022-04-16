@@ -7,37 +7,45 @@ public class Train {
 
     private final int capacity;
     private int seconds; // Time when the train got full.
-    private Thread thread = new Thread(() -> {
-        ConsoleColors.printInRed("Train is full, wait for the next train to arrive.");
-        seconds = ThreadTimer.getSeconds();
-        this.left = true;
-        try {
-            Thread.sleep(30000);
-        } catch (InterruptedException ignored) {
-        }
-        this.containers.clear();
-        this.left = false;
-        ConsoleColors.printInGreen("New train has arrived.");
-    });
+    private Thread thread;
+
     private boolean left = false; // Boolean value which tells if the train is ready or not.
     private LinkedList<Container> containers = new LinkedList<>();
 
     public Train(int capacity) {
         this.capacity = capacity;
-    }
+        thread = new Thread(() -> {
+            seconds = ThreadTimer.getSeconds();
+            this.left = true;
+            try {
+                Thread.sleep(30000);
+                thread.interrupt();
+            } catch (InterruptedException e) { }
 
-    public void loadContainer(Container c) {
+            this.containers.clear();
+            this.left = false;
+            ConsoleColors.printInGreen("New train has arrived.");
+        });
+    }
+// Returns true if a container has been successfully moved to the train.
+    public boolean loadContainer(Container c) {
         if (containers.size() + 1 == capacity && !left){
+            System.out.println("Your container has been moved to the train.");
             containers.add(c);
             this.thread.start();
-            this.thread.interrupt();
         }
         else if(left){
-            ConsoleColors.printInYellow("The next train will arrive in"+(30-(ThreadTimer.getSeconds()-seconds)) + "s.");
+            ConsoleColors.printInYellow("The next train will arrive in "+(30-(ThreadTimer.getSeconds()-seconds)) + "s.");
+            return false;
         }
-        else
+        else {
+            System.out.println("Your container has been moved to the train.");
             containers.add(c);
+        }
+
+        return true;
     }
+
 
 //    public int getCapacity() {
 //        return capacity;

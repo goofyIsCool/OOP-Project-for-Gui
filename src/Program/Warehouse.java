@@ -14,7 +14,7 @@ public class Warehouse {
 
     Thread thread = new Thread(()-> {
 
-        while(true) {
+        while(!Thread.interrupted()) {
             Iterator<Map.Entry<Integer, Container>> iter = containers.entrySet().iterator();
             while (iter.hasNext()) {
                 Map.Entry<Integer,Container> entry = iter.next();
